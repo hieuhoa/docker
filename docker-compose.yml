@@ -6,6 +6,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - WITH_XDEBUG=true
+    env_file: .env
     image: digitalocean.com/php
     container_name: app
     restart: unless-stopped
@@ -15,7 +18,7 @@ services:
       SERVICE_TAGS: dev
     working_dir: /var/www
     volumes:
-      - ./project/:/var/www
+      - ./:/var/www
       - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
     networks:
       - app-network
@@ -30,7 +33,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./project/:/var/www
+      - ./:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - app-network
